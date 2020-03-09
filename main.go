@@ -19,9 +19,9 @@ type car struct {
 var cars []car
 
 type group struct {
-	id         int
-	people     int
-	journeying bool
+	ID         float64
+	People     float64
+	Journeying bool
 }
 
 var groups []group
