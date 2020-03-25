@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/daniOrtiz11/car-pooling/pkg/server"
+	"github.com/daniOrtiz11/table-booking/pkg/server"
 	"github.com/joho/godotenv"
 )
 

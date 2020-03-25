@@ -1,23 +1,23 @@
-package journey
+package booking
 
 import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/daniOrtiz11/car-pooling/internal/database"
+	"github.com/daniOrtiz11/table-booking/internal/database"
 )
 
 /*
 Journey Pojo
 */
-type journey struct {
+type booking struct {
 	ID     int
 	People int
 }
 
-//journey created, journey lastupdate
+//booking created, booking lastupdate
 
-var journeys []journey
+var bookings []booking
 
 /*
 Service is a
@@ -52,10 +52,10 @@ func ServiceImpl(body []byte) int {
 		return http.StatusAccepted
 	}
 
-	//update status car
+	//update status table
 	ok = database.UpdateStatusCarByID(id, 2)
 	if ok == false {
-		//eliminate reference to car in journey
+		//eliminate reference to table in booking
 		database.UpdateStatusJourneyByID(j.ID, 1)
 		return http.StatusBadRequest
 	}
@@ -63,8 +63,8 @@ func ServiceImpl(body []byte) int {
 
 }
 
-func unMarshalGroup(b []byte) (journey, error) {
-	var g journey
+func unMarshalGroup(b []byte) (booking, error) {
+	var g booking
 	if err := json.Unmarshal(b, &g); err != nil {
 		return g, err
 	}
@@ -72,8 +72,8 @@ func unMarshalGroup(b []byte) (journey, error) {
 }
 
 /*
-	A group of people requests to perform a journey.
-	Body required The group of people that wants to perform the journey
+	A group of people requests to perform a booking.
+	Body required The group of people that wants to perform the booking
 	Content Type application/json
 	Sample:
 	{

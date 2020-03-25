@@ -7,13 +7,13 @@ import (
 /*
 InsertJourney is a
 */
-func InsertJourney(id int, people int, state int, car int) bool {
+func InsertJourney(id int, people int, state int, table int) bool {
 
 	db := getConnection()
-	sqlStatement := `INSERT INTO "car-pooling-sch"."JOURNEYS"
-	("id", "people", "status", "timestamp_created", "timestamp_last_updated", "car") 
+	sqlStatement := `INSERT INTO "table-booking-sch"."BOOKINGS"
+	("id", "people", "status", "timestamp_created", "timestamp_last_updated", "table") 
 	VALUES ($1, $2, $3, NOW(), NOW(), $4)`
-	_, err := db.Exec(sqlStatement, id, people, state, car)
+	_, err := db.Exec(sqlStatement, id, people, state, table)
 	defer db.Close()
 	if err != nil {
 		log.Println(err)
@@ -27,7 +27,7 @@ UpdateStatusJourneyByID is a
 */
 func UpdateStatusJourneyByID(id int, newStatus int) bool {
 	db := getConnection()
-	sqlStatement := `UPDATE "car-pooling-sch"."JOURNEYS" SET "status" = $1 WHERE id = $2`
+	sqlStatement := `UPDATE "table-booking-sch"."BOOKINGS" SET "status" = $1 WHERE id = $2`
 	_, err := db.Exec(sqlStatement, newStatus, id)
 	defer db.Close()
 	if err != nil {
@@ -42,7 +42,7 @@ FindJourneyByID is a
 */
 func FindJourneyByID(idToSearch int) int {
 	db := getConnection()
-	sqlStatement := `SELECT "*" FROM "car-pooling-sch"."JOURNEYS" WHERE "id" = $1`
+	sqlStatement := `SELECT "*" FROM "table-booking-sch"."BOOKINGS" WHERE "id" = $1`
 	id := 0
 	rows, err := db.Query(sqlStatement, idToSearch)
 	defer db.Close()

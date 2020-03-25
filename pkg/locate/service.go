@@ -1,6 +1,6 @@
 package locate
 
-import "github.com/daniOrtiz11/car-pooling/internal/database"
+import "github.com/daniOrtiz11/table-booking/internal/database"
 
 /*
 Service is a

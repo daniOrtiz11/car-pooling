@@ -6,7 +6,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/daniOrtiz11/car-pooling/internal/utils"
+	"github.com/daniOrtiz11/table-booking/internal/utils"
 	//postgresql driver
 	_ "github.com/lib/pq"
 )
