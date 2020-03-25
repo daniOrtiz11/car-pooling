@@ -1,18 +1,18 @@
-package cars
+package tables
 
 import (
 	"log"
 )
 
-type car struct {
+type table struct {
 	id         int
 	capacity   int
 	seats      int
 	seatsTaken int
-	journeying bool
+	eating     bool
 }
 
-var cars []car
+var tables []table
 
 /*
 Service is a
@@ -25,5 +25,5 @@ type Service interface {
 ServiceImpl is a
 */
 func ServiceImpl() {
-	log.Println("in cars")
+	log.Println("in tables")
 }

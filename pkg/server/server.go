@@ -6,13 +6,13 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/daniOrtiz11/car-pooling/pkg/cars"
-	"github.com/daniOrtiz11/car-pooling/pkg/dropoff"
+	"github.com/daniOrtiz11/table-booking/pkg/bill"
+	"github.com/daniOrtiz11/table-booking/pkg/tables"
 
-	"github.com/daniOrtiz11/car-pooling/pkg/journey"
+	"github.com/daniOrtiz11/table-booking/pkg/booking"
 
-	"github.com/daniOrtiz11/car-pooling/internal/utils"
-	"github.com/daniOrtiz11/car-pooling/pkg/locate"
+	"github.com/daniOrtiz11/table-booking/internal/utils"
+	"github.com/daniOrtiz11/table-booking/pkg/locate"
 	"github.com/gorilla/mux"
 )
 
@@ -20,9 +20,9 @@ type api struct {
 	router http.Handler
 
 	locate  locate.Service
-	journey journey.Service
-	dropoff dropoff.Service
-	cars    cars.Service
+	booking booking.Service
+	bill    bill.Service
+	tables  tables.Service
 }
 
 /*
@@ -34,9 +34,9 @@ type Server interface {
 
 	locateRequest(w http.ResponseWriter, r *http.Request)
 	statusRequest(w http.ResponseWriter, r *http.Request)
-	journeyRequest(w http.ResponseWriter, r *http.Request)
-	dropoffRequest(w http.ResponseWriter, r *http.Request)
-	carsRequest(w http.ResponseWriter, r *http.Request)
+	bookingRequest(w http.ResponseWriter, r *http.Request)
+	billRequest(w http.ResponseWriter, r *http.Request)
+	tablesRequest(w http.ResponseWriter, r *http.Request)
 }
 
 func (a *api) Router() http.Handler {
@@ -57,17 +57,17 @@ func New() Server {
 		r := mux.NewRouter()
 		api := r.PathPrefix("/api/v1").Subrouter()
 		api.HandleFunc("/status", statusRequest).Methods(http.MethodGet)
-		api.HandleFunc("/journey", journeyRequest).Methods(http.MethodPost)
-		api.HandleFunc("/dropoff", dropoffRequest).Methods(http.MethodPost)
+		api.HandleFunc("/booking", bookingRequest).Methods(http.MethodPost)
+		api.HandleFunc("/bill", billRequest).Methods(http.MethodPost)
 		api.HandleFunc("/locate", locateRequest).Methods(http.MethodPost)
-		api.HandleFunc("/cars", carsRequest).Methods(http.MethodPut)
+		api.HandleFunc("/tables", tablesRequest).Methods(http.MethodPut)
 		log.Fatal(http.ListenAndServe(Cfg.Server.Port, r))
 	*/
 	r.HandleFunc("/status", a.statusRequest).Methods(http.MethodGet)
-	r.HandleFunc("/journey", a.journeyRequest).Methods(http.MethodPost)
-	r.HandleFunc("/dropoff", a.dropoffRequest).Methods(http.MethodPost)
+	r.HandleFunc("/booking", a.bookingRequest).Methods(http.MethodPost)
+	r.HandleFunc("/bill", a.billRequest).Methods(http.MethodPost)
 	r.HandleFunc("/locate", a.locateRequest).Methods(http.MethodPost)
-	r.HandleFunc("/cars", a.carsRequest).Methods(http.MethodPut)
+	r.HandleFunc("/tables", a.tablesRequest).Methods(http.MethodPut)
 	a.router = r
 
 	return a
@@ -75,14 +75,14 @@ func New() Server {
 
 func (a *api) locateRequest(w http.ResponseWriter, r *http.Request) {
 	/*
-		Given a group ID such that ID=X, return the car the group is traveling
-		with, or no car if they are still waiting to be served.
+		Given a group ID such that ID=X, return the table the group is traveling
+		with, or no table if they are still waiting to be served.
 		Body required A url encoded form with the group ID such that ID=X
 		Content Type application/x-www-form-urlencoded
 		Accept application/json
 		Responses:
-		200 OK With the car as the payload when the group is assigned to a car.
-		204 No Content When the group is waiting to be assigned to a car.
+		200 OK With the table as the payload when the group is assigned to a table.
+		204 No Content When the group is waiting to be assigned to a table.
 		404 Not Found When the group is not to be found.
 		400 Bad Request When there is a failure in the request format or the
 		payload can't be unmarshalled.
@@ -115,10 +115,10 @@ func (a *api) statusRequest(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (a *api) journeyRequest(w http.ResponseWriter, r *http.Request) {
+func (a *api) bookingRequest(w http.ResponseWriter, r *http.Request) {
 	/*
-		A group of people requests to perform a journey.
-		Body required The group of people that wants to perform the journey
+		A group of people requests to perform a booking.
+		Body required The group of people that wants to perform the booking
 		Content Type application/json
 		Sample:
 		{
@@ -144,13 +144,13 @@ func (a *api) journeyRequest(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		status := journey.ServiceImpl(body)
+		status := booking.ServiceImpl(body)
 		w.WriteHeader(status)
 	}
 
 }
 
-func (a *api) dropoffRequest(w http.ResponseWriter, r *http.Request) {
+func (a *api) billRequest(w http.ResponseWriter, r *http.Request) {
 	/*
 		A group of people requests to be dropped off. Whether they traveled or not.
 		Body required A form with the group ID, such that ID=X
@@ -170,12 +170,12 @@ func (a *api) dropoffRequest(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(`{"message": "post called"}`))
 }
 
-func (a *api) carsRequest(w http.ResponseWriter, r *http.Request) {
+func (a *api) tablesRequest(w http.ResponseWriter, r *http.Request) {
 	/*
-		Load the list of available cars in the service and remove all previous data
-		(existing journeys and cars). This method may be called more than once during
+		Load the list of available tables in the service and remove all previous data
+		(existing bookings and tables). This method may be called more than once during
 		the life cycle of the service.
-		Body required The list of cars to load.
+		Body required The list of tables to load.
 		Content Type application/json
 		Sample:
 		[
