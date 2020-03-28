@@ -2,6 +2,7 @@ package database
 
 import (
 	"log"
+	"time"
 )
 
 /*
@@ -38,27 +39,28 @@ func UpdateStatusJourneyByID(id int, newStatus int) bool {
 }
 
 /*
-FindJourneyByID is a
+FindBookingByID is a
 */
-func FindJourneyByID(idToSearch int) int {
+func FindBookingByID(idToSearch int) (int, int, int, int) {
 	db := getConnection()
-	sqlStatement := `SELECT "*" FROM "table-booking-sch"."BOOKINGS" WHERE "id" = $1`
-	id := 0
+	sqlStatement := `SELECT * FROM "table-booking-sch"."BOOKINGS" WHERE "id" = $1`
+	id, people, status, table := 0, 0, 0, 0
+	timeCreated, timeUpdated := time.Now(), time.Now()
 	rows, err := db.Query(sqlStatement, idToSearch)
 	defer db.Close()
 	if err != nil {
 		log.Println(err)
-		return 0
+		return 0, 0, 0, 0
 	}
 	exits := rows.Next()
 	if exits {
-		err = rows.Scan(id)
+		err = rows.Scan(&id, &people, &status, &timeCreated, &timeUpdated, &table)
 		if err != nil {
 			log.Println(err)
-			return 0
+			return 0, 0, 0, 0
 		}
 	}
-	return id
+	return id, people, status, table
 }
 
 /*

@@ -25,12 +25,11 @@ func getConnection() *sql.DB {
 		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-
 	err = db.Ping()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return db
 

@@ -8,16 +8,18 @@ import (
 )
 
 /*
-Journey Pojo
+Booking Pojo
 */
-type booking struct {
+type Booking struct {
 	ID     int
 	People int
+	Status int
+	Table  int
 }
 
 //booking created, booking lastupdate
 
-var bookings []booking
+var bookings []Booking
 
 /*
 Service is a
@@ -30,7 +32,7 @@ type Service interface {
 ServiceImpl is a
 */
 func ServiceImpl(body []byte) int {
-	j, errUnmarshal := unMarshalGroup(body)
+	j, errUnmarshal := UnMarshalGroupByBytes(body)
 	if errUnmarshal != nil {
 		return http.StatusBadRequest
 	}
@@ -63,28 +65,26 @@ func ServiceImpl(body []byte) int {
 
 }
 
-func unMarshalGroup(b []byte) (booking, error) {
-	var g booking
-	if err := json.Unmarshal(b, &g); err != nil {
-		return g, err
+/*
+UnMarshalGroupByBytes is a
+*/
+func UnMarshalGroupByBytes(bi []byte) (Booking, error) {
+	var bo Booking
+	if err := json.Unmarshal(bi, &bo); err != nil {
+		return bo, err
 	}
-	return g, nil
+	return bo, nil
 }
 
 /*
-	A group of people requests to perform a booking.
-	Body required The group of people that wants to perform the booking
-	Content Type application/json
-	Sample:
-	{
-	  "id": 1,
-	  "people": 4
-	}
-	Responses:
-
-
-	200 OK or 202 Accepted When the group is registered correctly
-
-	400 Bad Request When there is a failure in the request format or the
-	payload can't be unmarshalled.
+UnMarshalGroupByValues is a
 */
+func UnMarshalGroupByValues(v1 int, v2 int, v3 int, v4 int) (Booking, error) {
+	bo := Booking{
+		ID:     v1,
+		People: v2,
+		Status: v3,
+		Table:  v4,
+	}
+	return bo, nil
+}

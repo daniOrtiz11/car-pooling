@@ -1,6 +1,7 @@
 package server
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -86,40 +87,19 @@ func (a *api) locateRequest(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		status := locate.ServiceImpl(id)
+		status, response := locate.ServiceImpl(id)
 		w.WriteHeader(status)
+		if response != 0 {
+			json.NewEncoder(w).Encode(response)
+		}
 	}
 }
 
 func (a *api) statusRequest(w http.ResponseWriter, r *http.Request) {
-	/*
-		Indicate the service has started up correctly and is ready to accept requests.
-		Responses:
-
-
-		200 OK When the service is ready to receive requests.
-	*/
 	w.WriteHeader(http.StatusOK)
 }
 
 func (a *api) bookingRequest(w http.ResponseWriter, r *http.Request) {
-	/*
-		A group of people requests to perform a booking.
-		Body required The group of people that wants to perform the booking
-		Content Type application/json
-		Sample:
-		{
-		  "id": 1,
-		  "people": 4
-		}
-		Responses:
-
-
-		200 OK or 202 Accepted When the group is registered correctly
-
-		400 Bad Request When there is a failure in the request format or the
-		payload can't be unmarshalled.
-	*/
 	contentType := utils.GetContentType(r)
 	if contentType != "application/json" {
 		w.WriteHeader(http.StatusBadRequest)

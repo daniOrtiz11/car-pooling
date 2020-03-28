@@ -17,7 +17,7 @@ func CheckAvailableCar(requiredSeats int) int {
 	}
 	exits := rows.Next()
 	if exits {
-		err = rows.Scan(id)
+		err = rows.Scan(&id)
 		if err != nil {
 			log.Println(err)
 			return 0
@@ -40,11 +40,3 @@ func UpdateStatusCarByID(id int, newStatus int) bool {
 	}
 	return true
 }
-
-/*
-	INSERT INTO users (age, email, first_name, last_name)
-	VALUES ($1, $2, $3, $4)
-	RETURNING id`
-	id := 0
-	err := db.QueryRow(sqlStatement, 30, "jon@calhoun.io", "Jonathan", "Calhoun").Scan(&id)
-*/
