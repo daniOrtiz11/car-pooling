@@ -27,9 +27,9 @@ func CheckAvailableCar(requiredSeats int) int {
 }
 
 /*
-UpdateStatusCarByID is a
+UpdateStatusTableByID is a
 */
-func UpdateStatusCarByID(id int, newStatus int) bool {
+func UpdateStatusTableByID(id int, newStatus int) bool {
 	db := getConnection()
 	sqlStatement := `UPDATE "table-booking-sch"."TABLES" SET "status" = $1 WHERE id = $2`
 	err := db.QueryRow(sqlStatement, newStatus, id)
@@ -39,4 +39,15 @@ func UpdateStatusCarByID(id int, newStatus int) bool {
 		return false
 	}
 	return true
+}
+
+/*
+TruncateTables is a
+*/
+func TruncateTables() error {
+	db := getConnection()
+	sqlStatement := `TRUNCATE TABLE "table-booking-sch"."TABLES"`
+	_, err := db.Exec(sqlStatement)
+	defer db.Close()
+	return err
 }

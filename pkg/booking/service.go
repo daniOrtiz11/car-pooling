@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/daniOrtiz11/table-booking/internal/database"
+	"github.com/daniOrtiz11/table-booking/internal/utils"
 )
 
 /*
@@ -40,9 +41,9 @@ func ServiceImpl(body []byte) int {
 	id := database.CheckAvailableCar(int(j.People))
 	ok := false
 	if id == 0 {
-		ok = database.InsertJourney(j.ID, j.People, 1, id)
+		ok = database.InsertJourney(j.ID, j.People, utils.WATING, id)
 	} else {
-		ok = database.InsertJourney(j.ID, j.People, 2, id)
+		ok = database.InsertJourney(j.ID, j.People, utils.EATING, id)
 	}
 
 	//check insert correcty
@@ -55,10 +56,10 @@ func ServiceImpl(body []byte) int {
 	}
 
 	//update status table
-	ok = database.UpdateStatusCarByID(id, 2)
+	ok = database.UpdateStatusTableByID(id, utils.EATING)
 	if ok == false {
 		//eliminate reference to table in booking
-		database.UpdateStatusJourneyByID(j.ID, 1)
+		database.UpdateStatusJourneyByID(j.ID, utils.WATING)
 		return http.StatusBadRequest
 	}
 	return http.StatusOK

@@ -64,6 +64,17 @@ func FindBookingByID(idToSearch int) (int, int, int, int) {
 }
 
 /*
+TruncateBookings is a
+*/
+func TruncateBookings() error {
+	db := getConnection()
+	sqlStatement := `TRUNCATE TABLE "table-booking-sch"."BOOKINGS"`
+	_, err := db.Exec(sqlStatement)
+	defer db.Close()
+	return err
+}
+
+/*
 	INSERT INTO users (age, email, first_name, last_name)
 	VALUES ($1, $2, $3, $4)
 	RETURNING id`

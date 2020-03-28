@@ -36,8 +36,8 @@ type Server interface {
 	locateRequest(w http.ResponseWriter, r *http.Request)
 	statusRequest(w http.ResponseWriter, r *http.Request)
 	bookingRequest(w http.ResponseWriter, r *http.Request)
-	billRequest(w http.ResponseWriter, r *http.Request)
 	tablesRequest(w http.ResponseWriter, r *http.Request)
+	billRequest(w http.ResponseWriter, r *http.Request)
 }
 
 func (a *api) Router() http.Handler {
@@ -124,7 +124,17 @@ func (a *api) billRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *api) tablesRequest(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusAccepted)
-	w.Write([]byte(`{"message": "put called"}`))
+	contentType := utils.GetContentType(r)
+	if contentType != "application/json" {
+		w.WriteHeader(http.StatusBadRequest)
+	} else {
+		defer r.Body.Close()
+		body, errBody := ioutil.ReadAll(r.Body)
+		if errBody != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		status := tables.ServiceImpl(body)
+		w.WriteHeader(status)
+	}
 }
