@@ -30,7 +30,7 @@ func ServiceImpl(idToSearch int) (int, int) {
 		return http.StatusNotFound, 0
 	}
 
-	if b.Status == utils.WATING {
+	if b.Status == utils.WAITING {
 		return http.StatusNoContent, 0
 	} else if b.Status == utils.EATING {
 		return http.StatusAccepted, b.Table

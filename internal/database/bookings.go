@@ -6,9 +6,9 @@ import (
 )
 
 /*
-InsertJourney is a
+InsertBooking is a
 */
-func InsertJourney(id int, people int, state int, table int) bool {
+func InsertBooking(id int, people int, state int, table int) bool {
 
 	db := getConnection()
 	sqlStatement := `INSERT INTO "table-booking-sch"."BOOKINGS"
@@ -24,9 +24,9 @@ func InsertJourney(id int, people int, state int, table int) bool {
 }
 
 /*
-UpdateStatusJourneyByID is a
+UpdateStatusBookingByID is a
 */
-func UpdateStatusJourneyByID(id int, newStatus int) bool {
+func UpdateStatusBookingByID(id int, newStatus int) bool {
 	db := getConnection()
 	sqlStatement := `UPDATE "table-booking-sch"."BOOKINGS" SET "status" = $1 WHERE id = $2`
 	_, err := db.Exec(sqlStatement, newStatus, id)

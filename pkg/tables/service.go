@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/daniOrtiz11/table-booking/internal/database"
+	"github.com/daniOrtiz11/table-booking/internal/utils"
 )
 
 /*
@@ -43,10 +44,14 @@ func ServiceImpl(body []byte) int {
 		log.Println(errTrunT)
 		return http.StatusBadRequest
 	}
-	//errInsert := database.insertManyTables(tables)
 
-	log.Println(tables)
-	return 0
+	for _, t := range tables {
+		okInsert := database.InsertTable(t.ID, t.Seats, utils.WAITING)
+		if okInsert == false {
+			return http.StatusBadRequest
+		}
+	}
+	return http.StatusOK
 }
 
 /*

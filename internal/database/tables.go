@@ -3,9 +3,27 @@ package database
 import "log"
 
 /*
-CheckAvailableCar is a
+InsertTable is a
 */
-func CheckAvailableCar(requiredSeats int) int {
+func InsertTable(id int, seats int, status int) bool {
+
+	db := getConnection()
+	sqlStatement := `INSERT INTO "table-booking-sch"."TABLES"
+	("id", "seats", "status", "timestamp_created", "timestamp_last_updated") 
+	VALUES ($1, $2, $3, NOW(), NOW())`
+	_, err := db.Exec(sqlStatement, id, seats, status)
+	defer db.Close()
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return true
+}
+
+/*
+CheckAvailableTable is a
+*/
+func CheckAvailableTable(requiredSeats int) int {
 	db := getConnection()
 	sqlStatement := `SELECT "id" FROM "table-booking-sch"."TABLES" WHERE "status" = 1 AND "seats" >= $1`
 	id := 0

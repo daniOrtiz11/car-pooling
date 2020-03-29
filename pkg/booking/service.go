@@ -38,12 +38,12 @@ func ServiceImpl(body []byte) int {
 		return http.StatusBadRequest
 	}
 	//mirar si hay coche disponible
-	id := database.CheckAvailableCar(int(j.People))
+	id := database.CheckAvailableTable(int(j.People))
 	ok := false
 	if id == 0 {
-		ok = database.InsertJourney(j.ID, j.People, utils.WATING, id)
+		ok = database.InsertBooking(j.ID, j.People, utils.WAITING, id)
 	} else {
-		ok = database.InsertJourney(j.ID, j.People, utils.EATING, id)
+		ok = database.InsertBooking(j.ID, j.People, utils.EATING, id)
 	}
 
 	//check insert correcty
@@ -59,7 +59,7 @@ func ServiceImpl(body []byte) int {
 	ok = database.UpdateStatusTableByID(id, utils.EATING)
 	if ok == false {
 		//eliminate reference to table in booking
-		database.UpdateStatusJourneyByID(j.ID, utils.WATING)
+		database.UpdateStatusBookingByID(j.ID, utils.WAITING)
 		return http.StatusBadRequest
 	}
 	return http.StatusOK

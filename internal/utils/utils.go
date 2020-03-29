@@ -6,9 +6,9 @@ import (
 )
 
 /*
-WATING is a
+WAITING is a
 */
-const WATING = 1
+const WAITING = 1
 
 /*
 EATING is a
