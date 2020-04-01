@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/daniOrtiz11/table-booking/pkg/bill"
 	"github.com/daniOrtiz11/table-booking/pkg/tables"
@@ -106,21 +107,41 @@ func (a *api) bookingRequest(w http.ResponseWriter, r *http.Request) {
 	} else {
 		defer r.Body.Close()
 		body, errBody := ioutil.ReadAll(r.Body)
-		//_, errBody := ioutil.ReadAll(r.Body)
 		if errBody != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 		status := booking.ServiceImpl(body)
 		w.WriteHeader(status)
+		return
 	}
 
 }
 
 func (a *api) billRequest(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message": "post called"}`))
+	contentType := utils.GetContentType(r)
+	firstContentType := strings.Split(contentType, ";")
+	if firstContentType[0] != "multipart/form-data" {
+		w.WriteHeader(http.StatusBadRequest)
+	} else {
+		err := r.ParseMultipartForm(1024 * 1024 * 16)
+		if err != nil {
+
+		}
+		mapsValue := r.MultipartForm.Value
+		idArg := mapsValue["ID"]
+		if len(idArg) == 0 {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		id, errArg := strconv.Atoi(idArg[0])
+		if errArg != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		status := bill.ServiceImpl(id)
+		w.WriteHeader(status)
+	}
 }
 
 func (a *api) tablesRequest(w http.ResponseWriter, r *http.Request) {
@@ -136,5 +157,6 @@ func (a *api) tablesRequest(w http.ResponseWriter, r *http.Request) {
 		}
 		status := tables.ServiceImpl(body)
 		w.WriteHeader(status)
+		return
 	}
 }
