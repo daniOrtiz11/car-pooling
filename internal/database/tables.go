@@ -3,9 +3,27 @@ package database
 import "log"
 
 /*
-CheckAvailableCar is a
+InsertTable is a
 */
-func CheckAvailableCar(requiredSeats int) int {
+func InsertTable(id int, seats int, status int) bool {
+
+	db := getConnection()
+	sqlStatement := `INSERT INTO "table-booking-sch"."TABLES"
+	("id", "seats", "status", "timestamp_created", "timestamp_last_updated") 
+	VALUES ($1, $2, $3, NOW(), NOW())`
+	_, err := db.Exec(sqlStatement, id, seats, status)
+	defer db.Close()
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return true
+}
+
+/*
+CheckAvailableTable is a
+*/
+func CheckAvailableTable(requiredSeats int) int {
 	db := getConnection()
 	sqlStatement := `SELECT "id" FROM "table-booking-sch"."TABLES" WHERE "status" = 1 AND "seats" >= $1`
 	id := 0
@@ -17,7 +35,7 @@ func CheckAvailableCar(requiredSeats int) int {
 	}
 	exits := rows.Next()
 	if exits {
-		err = rows.Scan(id)
+		err = rows.Scan(&id)
 		if err != nil {
 			log.Println(err)
 			return 0
@@ -27,9 +45,9 @@ func CheckAvailableCar(requiredSeats int) int {
 }
 
 /*
-UpdateStatusCarByID is a
+UpdateStatusTableByID is a
 */
-func UpdateStatusCarByID(id int, newStatus int) bool {
+func UpdateStatusTableByID(id int, newStatus int) bool {
 	db := getConnection()
 	sqlStatement := `UPDATE "table-booking-sch"."TABLES" SET "status" = $1 WHERE id = $2`
 	err := db.QueryRow(sqlStatement, newStatus, id)
@@ -42,9 +60,12 @@ func UpdateStatusCarByID(id int, newStatus int) bool {
 }
 
 /*
-	INSERT INTO users (age, email, first_name, last_name)
-	VALUES ($1, $2, $3, $4)
-	RETURNING id`
-	id := 0
-	err := db.QueryRow(sqlStatement, 30, "jon@calhoun.io", "Jonathan", "Calhoun").Scan(&id)
+TruncateTables is a
 */
+func TruncateTables() error {
+	db := getConnection()
+	sqlStatement := `TRUNCATE TABLE "table-booking-sch"."TABLES"`
+	_, err := db.Exec(sqlStatement)
+	defer db.Close()
+	return err
+}

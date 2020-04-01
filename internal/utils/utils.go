@@ -6,41 +6,19 @@ import (
 )
 
 /*
-Config environment struct
-
-type Config struct {
-	Server struct {
-		Port string `yaml:"port"`
-		Host string `yaml:"host"`
-	} `yaml:"server"`
-	Database struct {
-		Username string `yaml:"user"`
-		Password string `yaml:"pass"`
-	} `yaml:"database"`
-}
-
-
-Cfg environment var
-
-var Cfg = getConfig("config.yml")
-
-func getConfig(configFile string) Config {
-	f, err := os.Open(configFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
-	var cfg Config
-	decoder := yaml.NewDecoder(f)
-	err = decoder.Decode(&cfg)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return cfg
-}
-
+WAITING is a
 */
+const WAITING = 1
+
+/*
+EATING is a
+*/
+const EATING = 2
+
+/*
+COMPLETED is a
+*/
+const COMPLETED = 3
 
 /*
 GetContentType is a

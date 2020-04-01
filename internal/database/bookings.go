@@ -2,12 +2,13 @@ package database
 
 import (
 	"log"
+	"time"
 )
 
 /*
-InsertJourney is a
+InsertBooking is a
 */
-func InsertJourney(id int, people int, state int, table int) bool {
+func InsertBooking(id int, people int, state int, table int) bool {
 
 	db := getConnection()
 	sqlStatement := `INSERT INTO "table-booking-sch"."BOOKINGS"
@@ -23,9 +24,9 @@ func InsertJourney(id int, people int, state int, table int) bool {
 }
 
 /*
-UpdateStatusJourneyByID is a
+UpdateStatusBookingByID is a
 */
-func UpdateStatusJourneyByID(id int, newStatus int) bool {
+func UpdateStatusBookingByID(id int, newStatus int) bool {
 	db := getConnection()
 	sqlStatement := `UPDATE "table-booking-sch"."BOOKINGS" SET "status" = $1 WHERE id = $2`
 	_, err := db.Exec(sqlStatement, newStatus, id)
@@ -38,27 +39,39 @@ func UpdateStatusJourneyByID(id int, newStatus int) bool {
 }
 
 /*
-FindJourneyByID is a
+FindBookingByID is a
 */
-func FindJourneyByID(idToSearch int) int {
+func FindBookingByID(idToSearch int) (int, int, int, int) {
 	db := getConnection()
-	sqlStatement := `SELECT "*" FROM "table-booking-sch"."BOOKINGS" WHERE "id" = $1`
-	id := 0
+	sqlStatement := `SELECT * FROM "table-booking-sch"."BOOKINGS" WHERE "id" = $1`
+	id, people, status, table := 0, 0, 0, 0
+	timeCreated, timeUpdated := time.Now(), time.Now()
 	rows, err := db.Query(sqlStatement, idToSearch)
 	defer db.Close()
 	if err != nil {
 		log.Println(err)
-		return 0
+		return 0, 0, 0, 0
 	}
 	exits := rows.Next()
 	if exits {
-		err = rows.Scan(id)
+		err = rows.Scan(&id, &people, &status, &timeCreated, &timeUpdated, &table)
 		if err != nil {
 			log.Println(err)
-			return 0
+			return 0, 0, 0, 0
 		}
 	}
-	return id
+	return id, people, status, table
+}
+
+/*
+TruncateBookings is a
+*/
+func TruncateBookings() error {
+	db := getConnection()
+	sqlStatement := `TRUNCATE TABLE "table-booking-sch"."BOOKINGS"`
+	_, err := db.Exec(sqlStatement)
+	defer db.Close()
+	return err
 }
 
 /*
