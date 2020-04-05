@@ -14,9 +14,9 @@ var quit = make(chan int)
 */
 
 func loadEnv() {
-	err := godotenv.Load()
+	err := godotenv.Load("local.env")
 	if err != nil {
-		log.Fatal("Error loading env file")
+		log.Fatal("Error loading env file: ", err)
 	}
 }
 

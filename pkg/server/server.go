@@ -46,7 +46,7 @@ func (a *api) Router() http.Handler {
 }
 
 func (a *api) Addr() string {
-	return fmt.Sprintf("%s:%s", utils.GetEnv("SERVER_HOST", "127.0.0.1"), utils.GetEnv("SERVER_PORT", "8080"))
+	return fmt.Sprintf("%s:%s", utils.GetEnv("SERVER_HOST", "0.0.0.0"), utils.GetEnv("SERVER_PORT", "9091"))
 }
 
 /*
