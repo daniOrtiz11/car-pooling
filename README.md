@@ -114,16 +114,6 @@ Work in progress
 
 Work in progress
 
-Preliminary: 
-
-GOOS=linux GOARCH=amd64 go build
-
-mv table-booking ../../
-
-docker build -t table-booking:latest .
-
-docker run -p 9091:9091 table-booking:latest
-
 ### Local environment
 
 Work in progress
