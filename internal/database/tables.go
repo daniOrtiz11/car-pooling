@@ -6,8 +6,10 @@ import "log"
 InsertTable is a
 */
 func InsertTable(id int, seats int, status int) bool {
-
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return false
+	}
 	sqlStatement := `INSERT INTO "table-booking-sch"."TABLES"
 	("id", "seats", "status", "timestamp_created", "timestamp_last_updated") 
 	VALUES ($1, $2, $3, NOW(), NOW())`
@@ -24,7 +26,10 @@ func InsertTable(id int, seats int, status int) bool {
 CheckAvailableTable is a
 */
 func CheckAvailableTable(requiredSeats int) int {
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return 0
+	}
 	sqlStatement := `SELECT "id" FROM "table-booking-sch"."TABLES" WHERE "status" = 1 AND "seats" >= $1`
 	id := 0
 	rows, err := db.Query(sqlStatement, requiredSeats)
@@ -48,7 +53,10 @@ func CheckAvailableTable(requiredSeats int) int {
 UpdateStatusTableByID is a
 */
 func UpdateStatusTableByID(id int, newStatus int) bool {
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return false
+	}
 	sqlStatement := `UPDATE "table-booking-sch"."TABLES" SET "status" = $1 WHERE id = $2`
 	err := db.QueryRow(sqlStatement, newStatus, id)
 	defer db.Close()
@@ -63,7 +71,10 @@ func UpdateStatusTableByID(id int, newStatus int) bool {
 TruncateTables is a
 */
 func TruncateTables() error {
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return errCon
+	}
 	sqlStatement := `TRUNCATE TABLE "table-booking-sch"."TABLES"`
 	_, err := db.Exec(sqlStatement)
 	defer db.Close()

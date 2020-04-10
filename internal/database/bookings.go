@@ -9,8 +9,10 @@ import (
 InsertBooking is a
 */
 func InsertBooking(id int, people int, state int, table int) bool {
-
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return false
+	}
 	sqlStatement := `INSERT INTO "table-booking-sch"."BOOKINGS"
 	("id", "people", "status", "timestamp_created", "timestamp_last_updated", "table") 
 	VALUES ($1, $2, $3, NOW(), NOW(), $4)`
@@ -27,7 +29,10 @@ func InsertBooking(id int, people int, state int, table int) bool {
 UpdateStatusBookingByID is a
 */
 func UpdateStatusBookingByID(id int, newStatus int) bool {
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return false
+	}
 	sqlStatement := `UPDATE "table-booking-sch"."BOOKINGS" SET "status" = $1 WHERE id = $2`
 	_, err := db.Exec(sqlStatement, newStatus, id)
 	defer db.Close()
@@ -42,7 +47,10 @@ func UpdateStatusBookingByID(id int, newStatus int) bool {
 FindBookingByID is a
 */
 func FindBookingByID(idToSearch int) (int, int, int, int) {
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return 0, 0, 0, 0
+	}
 	sqlStatement := `SELECT * FROM "table-booking-sch"."BOOKINGS" WHERE "id" = $1`
 	id, people, status, table := 0, 0, 0, 0
 	timeCreated, timeUpdated := time.Now(), time.Now()
@@ -67,7 +75,10 @@ func FindBookingByID(idToSearch int) (int, int, int, int) {
 TruncateBookings is a
 */
 func TruncateBookings() error {
-	db := getConnection()
+	db, errCon := getConnection()
+	if errCon != nil {
+		return errCon
+	}
 	sqlStatement := `TRUNCATE TABLE "table-booking-sch"."BOOKINGS"`
 	_, err := db.Exec(sqlStatement)
 	defer db.Close()
