@@ -110,13 +110,23 @@ Responses:
 
 Work in progress
 
-## Deployment
+### Go
+
+![The Go Programming Language](https://en.wikipedia.org/wiki/Go_(programming_language)#/media/File:Go_Logo_Blue.svg)
+*The Go Programming Language by [The Go Authors - https://blog.golang.org/go-brand]*
+
+To install Golang all we have to do is follow their <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml" target="_blank">official documentation</a>, it will only take a few moments. 
+
+### Docker
+
+### Postman (Optional)
+
+## Getting Started
 
 Work in progress
 
-### Local environment
+## Testing
 
-Work in progress
+## License
 
-### Production environment
-Work in progress
+All other files are covered by the MIT license, see [`LICENSE`](./LICENSE).
