@@ -2,7 +2,7 @@
 
 
 The purpose of this API is to provide table-occupancy service as people arrive at the restaurant.
-
+The API is built with Go and PostgreSQL.
 
 In this service we assume that groups of diners arrive at the restaurant and have to be assigned a table. On the other hand, the tables have a number of seats available. So if a table has enough seats available it could accommodate a group of customers.
 
@@ -135,7 +135,38 @@ A Json collection of Postman is provided in the repository for the purpose of te
 
 ## Getting Started
 
-Work in progress
+The first step is to clone or download the repository. Once done, we open a console and browse to it.
+
+A Makefile is provided in the repository so starting to use the API is very simple:
+
+```bash
+MBP-Dani:table-booking daniortiz$ make
+Welcome to Table-booking API!
+Prerequisites:
+1. Golang
+2. Docker
+3. Unix based os
+Options:
+help:  Show this help.
+table-booking-up:  Command to run the application.
+table-booking-down:  Command to shut down the application. 
+```
+
+Once you have checked that you have Go installed and daemon Docker is running to start the service you just have to choose the right option:
+
+```bash
+MBP-Dani:table-booking daniortiz$ make table-booking-up
+...
+...
+Creating table-booking_rest_1 ... done
+Creating table-booking_db_1   ... done
+Attaching to table-booking_rest_1, table-booking_db_1
+rest_1  | 2020/04/11 18:46:28 Starting server...
+...
+...
+db_1    | 2020-04-11 18:46:29.848 UTC [1] LOG:  database system is ready to accept connections
+```
+The API is now ready to receive requests. EL COMANDO MAKEFILE DOCKER POSTGRE BLA BLA BLA
 
 ## License
 
