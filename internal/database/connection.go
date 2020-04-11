@@ -11,11 +11,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func getConnection() *sql.DB {
+func getConnection() (*sql.DB, error) {
 	host := utils.GetEnv("DB_HOST", "")
 	port, errPort := strconv.Atoi(utils.GetEnv("DB_PORT", ""))
 	if errPort != nil {
-		log.Fatal(errPort)
+		log.Println(errPort)
+		return nil, errPort
 	}
 	user := utils.GetEnv("DB_USER", "")
 	password := utils.GetEnv("DB_PASS", "")
@@ -25,12 +26,14 @@ func getConnection() *sql.DB {
 		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
 	err = db.Ping()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return nil, err
 	}
-	return db
+	return db, nil
 
 }

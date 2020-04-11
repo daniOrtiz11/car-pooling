@@ -1,3 +1,8 @@
+/*
+Copyright 2020 Daniel Ortiz @daniOrtiz11 (https://github.com/daniOrtiz11). All rights reserved.
+Code under the MIT License. See LICENSE in the project root for license information.
+*/
+
 package main
 
 import (
@@ -8,15 +13,11 @@ import (
 	"github.com/joho/godotenv"
 )
 
-/*
-var c = make(chan int)
-var quit = make(chan int)
-*/
-
 func loadEnv() {
-	err := godotenv.Load()
+	//change filename to use other environment
+	err := godotenv.Load("dev.env")
 	if err != nil {
-		log.Fatal("Error loading env file")
+		log.Fatal("Error loading env file: ", err)
 	}
 }
 

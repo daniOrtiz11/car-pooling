@@ -1,0 +1,17 @@
+version: '3'
+services:  
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./table-booking_dump.sql:/docker-entrypoint-initdb.d/table-booking_dump.sql
+  rest:
+    build: .
+    ports:
+      - "9091:9091" 
