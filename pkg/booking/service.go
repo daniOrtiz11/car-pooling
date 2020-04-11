@@ -18,26 +18,25 @@ type Booking struct {
 	Table  int
 }
 
-//booking created, booking lastupdate
-
-var bookings []Booking
+//var bookings []Booking
 
 /*
-Service is a
+Service is a interface to define the methods
 */
 type Service interface {
 	ServiceImpl(body []byte)
 }
 
 /*
-ServiceImpl is a
+ServiceImpl will retrieve 200 or 202 http status after successful operation.
+In other case, will retrieve 400 http status.
 */
 func ServiceImpl(body []byte) int {
 	j, errUnmarshal := UnMarshalGroupByBytes(body)
 	if errUnmarshal != nil {
 		return http.StatusBadRequest
 	}
-	//mirar si hay coche disponible
+	//check for availabe tables
 	id := database.CheckAvailableTable(int(j.People))
 	ok := false
 	if id == 0 {
@@ -67,7 +66,8 @@ func ServiceImpl(body []byte) int {
 }
 
 /*
-UnMarshalGroupByBytes is a
+UnMarshalGroupByBytes will retrieve a Booking entity and empty error after successful unmarshal by bytes.
+In other case, will retrieve a filled error.
 */
 func UnMarshalGroupByBytes(bi []byte) (Booking, error) {
 	var bo Booking
@@ -78,7 +78,7 @@ func UnMarshalGroupByBytes(bi []byte) (Booking, error) {
 }
 
 /*
-UnMarshalGroupByValues is a
+UnMarshalGroupByValues will retrieve a Booking entity and empty error after successful unmarshal by values.
 */
 func UnMarshalGroupByValues(v1 int, v2 int, v3 int, v4 int) (Booking, error) {
 	bo := Booking{

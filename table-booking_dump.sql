@@ -34,6 +34,12 @@ ALTER TABLE ONLY "table-booking-sch"."STATUS"
 ALTER TABLE ONLY "table-booking-sch"."STATUS"
     ADD CONSTRAINT name_unique UNIQUE (name);
 
+INSERT INTO "table-booking-sch"."STATUS" (id, name)
+VALUES
+   (1, 'WAITING'),
+   (2, 'COMPLETED'),
+   (3, 'EATING');
+
 ALTER TABLE ONLY "table-booking-sch"."TABLES"
     ADD CONSTRAINT status_fk FOREIGN KEY (status) REFERENCES "table-booking-sch"."STATUS"(id) NOT VALID;
 

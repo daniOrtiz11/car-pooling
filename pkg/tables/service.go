@@ -21,14 +21,15 @@ type Table struct {
 //var tables []table
 
 /*
-Service is a
+Service is a interface to define the methods
 */
 type Service interface {
 	ServiceImpl()
 }
 
 /*
-ServiceImpl is a
+ServiceImpl will retrieve 200 http status after successful operation.
+In other case, will retrieve 400 http status.
 */
 func ServiceImpl(body []byte) int {
 	tables, errUnmarshal := unMarshalTablesByBytes(body)
@@ -55,7 +56,8 @@ func ServiceImpl(body []byte) int {
 }
 
 /*
-UnMarshalTablesByBytes is a
+UnMarshalGroupByBytes will retrieve a list of Table entity and empty error after successful unmarshal by bytes.
+In other case, will retrieve a filled error.
 */
 func unMarshalTablesByBytes(bi []byte) ([]Table, error) {
 	var tables []Table

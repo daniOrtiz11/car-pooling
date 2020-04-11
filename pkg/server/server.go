@@ -28,14 +28,14 @@ type api struct {
 }
 
 /*
-Server is a
+Server is a interface to define the methods
 */
 type Server interface {
 	Router() http.Handler
 	Addr() string
 
 	locateRequest(w http.ResponseWriter, r *http.Request)
-	statusRequest(w http.ResponseWriter, r *http.Request)
+	healthcheckRequest(w http.ResponseWriter, r *http.Request)
 	bookingRequest(w http.ResponseWriter, r *http.Request)
 	tablesRequest(w http.ResponseWriter, r *http.Request)
 	billRequest(w http.ResponseWriter, r *http.Request)
@@ -50,7 +50,7 @@ func (a *api) Addr() string {
 }
 
 /*
-New is a
+New will retrieve a Service interface and define its attributes
 */
 func New() Server {
 	a := &api{}
@@ -58,14 +58,8 @@ func New() Server {
 	/*
 		r := mux.NewRouter()
 		api := r.PathPrefix("/api/v1").Subrouter()
-		api.HandleFunc("/status", statusRequest).Methods(http.MethodGet)
-		api.HandleFunc("/booking", bookingRequest).Methods(http.MethodPost)
-		api.HandleFunc("/bill", billRequest).Methods(http.MethodPost)
-		api.HandleFunc("/locate", locateRequest).Methods(http.MethodPost)
-		api.HandleFunc("/tables", tablesRequest).Methods(http.MethodPut)
-		log.Fatal(http.ListenAndServe(Cfg.Server.Port, r))
 	*/
-	r.HandleFunc("/status", a.statusRequest).Methods(http.MethodGet)
+	r.HandleFunc("/healthcheck", a.healthcheckRequest).Methods(http.MethodGet)
 	r.HandleFunc("/booking", a.bookingRequest).Methods(http.MethodPost)
 	r.HandleFunc("/bill", a.billRequest).Methods(http.MethodPost)
 	r.HandleFunc("/locate", a.locateRequest).Methods(http.MethodPost)
@@ -96,7 +90,7 @@ func (a *api) locateRequest(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (a *api) statusRequest(w http.ResponseWriter, r *http.Request) {
+func (a *api) healthcheckRequest(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 

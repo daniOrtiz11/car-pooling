@@ -3,7 +3,8 @@ package database
 import "log"
 
 /*
-InsertTable is a
+InsertTable will retrieve true after successful insertion.
+In other case, will retrieve false.
 */
 func InsertTable(id int, seats int, status int) bool {
 	db, errCon := getConnection()
@@ -23,7 +24,8 @@ func InsertTable(id int, seats int, status int) bool {
 }
 
 /*
-CheckAvailableTable is a
+CheckAvailableTable will retrieve the table's id after successful search.
+In other case, will retrieve a zero.
 */
 func CheckAvailableTable(requiredSeats int) int {
 	db, errCon := getConnection()
@@ -50,15 +52,16 @@ func CheckAvailableTable(requiredSeats int) int {
 }
 
 /*
-UpdateStatusTableByID is a
+UpdateStatusTableByID will retrieve true after successful update.
+In other case, will retrieve a zero.
 */
 func UpdateStatusTableByID(id int, newStatus int) bool {
 	db, errCon := getConnection()
 	if errCon != nil {
 		return false
 	}
-	sqlStatement := `UPDATE "table-booking-sch"."TABLES" SET "status" = $1 WHERE id = $2`
-	err := db.QueryRow(sqlStatement, newStatus, id)
+	sqlStatement := `UPDATE "table-booking-sch"."TABLES" SET "status" = $1 WHERE "id" = $2`
+	_, err := db.Exec(sqlStatement, newStatus, id)
 	defer db.Close()
 	if err != nil {
 		log.Println(err)
@@ -68,7 +71,8 @@ func UpdateStatusTableByID(id int, newStatus int) bool {
 }
 
 /*
-TruncateTables is a
+TruncateTables will retrieve empty error after successful truncate.
+In other case, will retrieve a filled error.
 */
 func TruncateTables() error {
 	db, errCon := getConnection()

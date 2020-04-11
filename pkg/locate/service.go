@@ -10,14 +10,15 @@ import (
 )
 
 /*
-Service is a
+Service is a interface to define the methods
 */
 type Service interface {
 	ServiceImpl()
 }
 
 /*
-ServiceImpl is a
+ServiceImpl will retrieve 200 or 202 http status and table's id after successful operation.
+In other case, will retrieve 400 http status and zero.
 */
 func ServiceImpl(idToSearch int) (int, int) {
 	v1, v2, v3, v4 := database.FindBookingByID(idToSearch)
@@ -33,9 +34,9 @@ func ServiceImpl(idToSearch int) (int, int) {
 	if b.Status == utils.WAITING {
 		return http.StatusNoContent, 0
 	} else if b.Status == utils.EATING {
-		return http.StatusAccepted, b.Table
+		return http.StatusOK, b.Table
 	} else {
-		//COMPLETED booking
+		//completed booking
 		return http.StatusNotFound, 0
 	}
 

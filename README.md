@@ -17,7 +17,7 @@ For example: a group of 6 is waiting for a table and there are 4 empty seats at 
 
 This API must comply with the following contract:
 
-### GET /status
+### GET /healthcheck
 
 Indicate the service has started up correctly and is ready to accept requests.
 

@@ -10,14 +10,15 @@ import (
 )
 
 /*
-Service is a
+Service is a interface to define the methods
 */
 type Service interface {
-	ServiceImpl()
+	ServiceImpl(id int) int
 }
 
 /*
-ServiceImpl is a
+ServiceImpl will retrieve 200 http status after successful operation.
+In other case, will retrieve 404 http status.
 */
 func ServiceImpl(idToSearch int) int {
 	completed := database.UpdateStatusBookingByID(idToSearch, utils.COMPLETED)

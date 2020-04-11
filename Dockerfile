@@ -1,14 +1,12 @@
 FROM golang:latest 
 
-#RUN apk --no-cache add ca-certificates=20190108-r0 libc6-compat=1.1.19-r10
-
-WORKDIR /table
+WORKDIR /app
 
 EXPOSE 9091
 
-COPY table-booking /table
+COPY table-booking /app
 
-COPY local.env /table
+COPY dev.env /app
 
-ENTRYPOINT [ "/table/table-booking"]
+ENTRYPOINT [ "/app/table-booking"]
 

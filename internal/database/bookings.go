@@ -6,7 +6,8 @@ import (
 )
 
 /*
-InsertBooking is a
+InsertBooking will retrieve true after successful insertion.
+In other case, will retrieve false.
 */
 func InsertBooking(id int, people int, state int, table int) bool {
 	db, errCon := getConnection()
@@ -26,14 +27,15 @@ func InsertBooking(id int, people int, state int, table int) bool {
 }
 
 /*
-UpdateStatusBookingByID is a
+UpdateStatusBookingByID will retrieve true after successful update.
+In other case, will retrieve false.
 */
 func UpdateStatusBookingByID(id int, newStatus int) bool {
 	db, errCon := getConnection()
 	if errCon != nil {
 		return false
 	}
-	sqlStatement := `UPDATE "table-booking-sch"."BOOKINGS" SET "status" = $1 WHERE id = $2`
+	sqlStatement := `UPDATE "table-booking-sch"."BOOKINGS" SET "status" = $1 WHERE "id" = $2`
 	_, err := db.Exec(sqlStatement, newStatus, id)
 	defer db.Close()
 	if err != nil {
@@ -44,7 +46,8 @@ func UpdateStatusBookingByID(id int, newStatus int) bool {
 }
 
 /*
-FindBookingByID is a
+FindBookingByID will retrieve the values to build a booking after successful search.
+In other case, will retrieve multiple zeros.
 */
 func FindBookingByID(idToSearch int) (int, int, int, int) {
 	db, errCon := getConnection()
@@ -72,7 +75,8 @@ func FindBookingByID(idToSearch int) (int, int, int, int) {
 }
 
 /*
-TruncateBookings is a
+TruncateBookings will retrieve empty error after successful truncate.
+In other case, will retrieve a filled error.
 */
 func TruncateBookings() error {
 	db, errCon := getConnection()
@@ -84,11 +88,3 @@ func TruncateBookings() error {
 	defer db.Close()
 	return err
 }
-
-/*
-	INSERT INTO users (age, email, first_name, last_name)
-	VALUES ($1, $2, $3, $4)
-	RETURNING id`
-	id := 0
-	err := db.QueryRow(sqlStatement, 30, "jon@calhoun.io", "Jonathan", "Calhoun").Scan(&id)
-*/

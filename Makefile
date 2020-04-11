@@ -1,20 +1,22 @@
-# .PHONY: database-up
-# database-up:
-# 		docker-compose -f database/docker-compose.yml  up
+# Copyright 2020 Daniel Ortiz @daniOrtiz11 (https://github.com/daniOrtiz11). All rights reserved.
+# Code under the MIT License. See LICENSE in the project root for license information.
 
-# .PHONY: database-down
-# database-down:
-# 		docker-compose -f database/docker-compose.yml  down
+.PHONY: help
+help: ## Show this help.
+	@echo Welcome to Table-booking API!
+	@echo Prerequisites:
+	@echo 1. Golang
+	@echo 2. Docker
+	@echo 3. Unix based os
+	@echo Options:
+	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
 .PHONY: table-booking-up
-table-booking-up:
+table-booking-up: ## Command to run the application.
 		GOOS=linux GOARCH=amd64 go build cmd/table-booking/main.go 
 		mv main table-booking
 		docker-compose -f docker-compose.yml  up --build
-		#docker build -t table-booking:latest .
-		#docker run -p 9091:9091 --net=database_default --link db table-booking:latest 
-		#docker run -d -p 9091:9091 table-booking:latest 
 
 .PHONY: table-booking-down
-table-booking-down:
+table-booking-down: ## Command to shut down the application. 
 		docker-compose -f docker-compose.yml  down
