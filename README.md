@@ -108,24 +108,34 @@ Responses:
 
 ## Dependencies
 
-Work in progress
-
 ### Go
 
-![The Go Programming Language](https://en.wikipedia.org/wiki/Go_(programming_language)#/media/File:Go_Logo_Blue.svg)
-*The Go Programming Language by [The Go Authors - https://blog.golang.org/go-brand]*
+![The Go Programming Language](https://golang.org/lib/godoc/images/go-logo-blue.svg)
 
-To install Golang all we have to do is follow their <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml" target="_blank">official documentation</a>, it will only take a few moments. 
+*The Go Programming Language by The Go Authors - https://blog.golang.org/go-brand*
+
+Golang is the main language of this application and is necessary for its development and deployment.
+To install Golang all we have to do is follow their <a href="https://golang.org/dl/" target="_blank">official documentation</a>, it will only take a few moments. 
 
 ### Docker
 
+![Docker](https://avatars0.githubusercontent.com/u/5429470?s=200&v=4)
+
+*Docker brand - https://github.com/docker*
+
+Docker is used to provide a container to our application and database. At the same time, it provides a quick way to deploy the API. To install Docker we go to their <a href="https://www.docker.com/get-started" target="_blank">official site</a> and select our operating system.
+
 ### Postman (Optional)
+
+![Postman](https://avatars3.githubusercontent.com/u/10251060?s=200&v=4)
+
+*Postman brand - https://github.com/postmanlabs*
+
+A Json collection of Postman is provided in the repository for the purpose of testing operations once the API is deployed, although it is not mandatory to test operations in this way. To install Postman we go to their <a href="https://www.postman.com/downloads/" target="_blank">official site</a> and select our operating system.
 
 ## Getting Started
 
 Work in progress
-
-## Testing
 
 ## License
 
