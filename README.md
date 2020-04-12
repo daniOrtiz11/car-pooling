@@ -1,8 +1,9 @@
 # Table booking API using Go
 
-
 The purpose of this API is to provide a table-occupancy service as people arrive at the restaurant.
 The API is built with Go and PostgreSQL.
+
+## Overview
 
 In this service, we assume that groups of diners arrive at the restaurant and have to be assigned a table. On the other hand, the tables have several seats available. So if a table has enough seats available it could accommodate a group of customers.
 
